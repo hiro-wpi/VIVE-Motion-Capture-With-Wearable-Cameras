@@ -10,5 +10,13 @@ Build/
 *.csproj
 *.sln
 
-# VR
+# steam VR
 *.vrmanifest
+Assets/SteamVR/
+Assets/SteamVR_Resources/
+Assets/StreamingAssets/
+Assets/XR/
+Assets/SteamVR.meta
+Assets/SteamVR_Resources.meta
+Assets/StreamingAssets.meta
+Assets/XR.meta

@@ -4,42 +4,43 @@ This wearable camera system consists of HTC VIVE VR headset, trackers and Realse
 
 ## Setup
 
-#### **Download**
+This repository is tested in Unity 2020+, but other Unity version should work as well.
 
-Git clone this repository in your Unity project folder. In Unity hub, add this folder to be a new project and launch it. Please **ignore the errors and warnings** if it's your first time launching the project. You will still need to install some packages to get rid of them.
+#### **Start a new project**
+
+In Unity hub, start a new empty 3D project. Name it "**VIVE-Motion-Capture-With-Wearable-Cameras**" (or other name you want).
 
 #### **Install packages**
 
 Depending on the module you use, you will need different packages:
 
-- For any of these modules, the basic package you need is "[SteamVR Plugin](https://assetstore.unity.com/packages/tools/integration/steamvr-plugin-32647)". Please make sure you put it in your Unity asset, import and download it in this project before running any scenes.
+- For any of these modules, the basic package you need is "[SteamVR Plugin](https://assetstore.unity.com/packages/tools/integration/steamvr-plugin-32647)". Please make sure you put it in your Unity asset, import and download it in this project.
 - To use Realsense camera in Unity, 
 - For eye tracking, 
 
-Open the corresponding scene in **Scenes** folder. Make sure your <u>SteamVR</u> is launched and all the components are found before running any scenes.
+#### **Download**
+
+Git clone this repository. Merge the downloaded folder into your project folder, or put all the files and folders of this repository under your project folder. Open the corresponding scene you need in **Scenes** folder. Make sure your <u>SteamVR</u> is launched and all the components are paired before running any scenes.
 
 
 # Demo Presentation
 
-This module includes three parts, which are **Eye tracking**, **Motion capture** and **Multi-Camera Feedback and Switching**, respectively. 
+This module includes three parts, which are **Motion capture**, **Eye tracking** and **Multi-Camera Streaming and Switching**, respectively. 
 
-## 1. Eye Tracking
-Eye tracking is provided by HTC VIVE VR headset which helps track the real-time gaze trajectory as well as facial expression of the experimenters as they wear the headset and look at the scene in it. This function is in "Eye Tracking" subitem under the scene 
-
-![eye_tracking_demo](Demo/eye_track_demo.gif)
-
-## 2. Motion Capture
+## 1. Motion Capture
 
 - Open scene **MotionCapture**.
 - In the game object hierarchy, for each tracker, enter the serial number in the inspector. Serial number can be found in your SteamVR floating window by `≡ -> Devices -> Manage Vive Trackers -> ManageVive Trackers`.
-- Launch SteamVR and make sure the headset and all the controllers are properly paired. Do a room setup in steamVR if it's your first time or when the VIVE station changes position.
-
+- Launch SteamVR and make sure the headset and all the controllers are properly paired. Do a room setup in steamVR if the objects appear wrongly posed.
 - Hit play in Unity, you should be able to see the trackers and the headset tracks properly.
-
 
 ![tracker_demo](Demo/tracker_demo.gif)
 
-If you run into any error, it's very likely that the "SteamVR plugin" isn't installed properly. Please reimport and redownload it.
+## 2. Eye Tracking
+
+Eye tracking is provided by HTC VIVE VR headset which helps track the real-time gaze trajectory as well as facial expression of the experimenters as they wear the headset and look at the scene in it. This function is in "Eye Tracking" subitem under the scene 
+
+![eye_tracking_demo](Demo/eye_track_demo.gif)
 
 
 ## 3. Multi-Camera Switch
