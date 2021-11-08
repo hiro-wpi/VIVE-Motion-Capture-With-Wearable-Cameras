@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class WebCamStream : MonoBehaviour
 {
     public RawImage rawImage;
+    public bool usePredefinedCameras;
     public string[] deviceNames;
 
     private WebCamDevice[] devices;
@@ -15,8 +16,6 @@ public class WebCamStream : MonoBehaviour
     void Start()
     {
         // Predefined names
-        // Remove this initialization if you do not 
-        // need to specify which cameras to use
         deviceNames = new string[] 
         {
             "Intel(R) RealSense(TM) Depth Camera 435 with RGB Module RGB",
@@ -35,7 +34,7 @@ public class WebCamStream : MonoBehaviour
         if (devices.Length > 0)
         {
             // If no predefined names are given
-            if (deviceNames.Length == 0)
+            if (!usePredefinedCameras)
             {
                 deviceNames = new string[devices.Length];
                 for (int i = 0; i < devices.Length; ++i)
@@ -80,7 +79,7 @@ public class WebCamStream : MonoBehaviour
 
     void LoadCamera(int index)
     {
-        if (index <= deviceNames.Length)
+        if (index < deviceNames.Length)
         {
             currentIndex = index;
             // change texture
