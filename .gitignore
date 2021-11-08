@@ -6,17 +6,23 @@ Temp/
 obj/
 Build/
 
-.vscode/
-*.csproj
-*.sln
+Packages/
+ProjectSettings/
 
 # steam VR
 *.vrmanifest
 Assets/SteamVR/
+Assets/SteamVR_Input/
 Assets/SteamVR_Resources/
 Assets/StreamingAssets/
 Assets/XR/
 Assets/SteamVR.meta
+Assets/SteamVR_Input.meta
 Assets/SteamVR_Resources.meta
 Assets/StreamingAssets.meta
 Assets/XR.meta
+
+# VS code
+.vscode/
+*.csproj
+*.sln

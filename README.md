@@ -14,7 +14,7 @@ In Unity hub, start a new empty 3D project. Name it "**VIVE-Motion-Capture-With-
 
 Depending on the module you use, you will need different packages:
 
-- For any of these modules, the basic package you need is "[SteamVR Plugin](https://assetstore.unity.com/packages/tools/integration/steamvr-plugin-32647)". Please make sure you put it in your Unity asset, import and download it in this project.
+- For any of these modules, the basic package you need is "[SteamVR Plugin](https://assetstore.unity.com/packages/tools/integration/steamvr-plugin-32647)". Please make sure you put it in your Unity asset, import and download it in this project. After downloaded, navigate to `Window -> SteamVR Input` and follow the instruction to generate necessary files.
 - To use Realsense camera in Unity, 
 - For eye tracking, 
 
