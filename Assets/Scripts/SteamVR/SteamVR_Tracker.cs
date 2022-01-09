@@ -2,9 +2,11 @@
 //
 // Purpose: For controlling in-game objects with tracked devices.
 //
-// Modification: Added serial number for easier index match
 //=============================================================================
-
+//
+// Modification: Added serial number for easier index match
+//
+//=============================================================================
 using UnityEngine;
 using Valve.VR;
 using System.Text;
@@ -50,7 +52,7 @@ namespace Valve.VR
                 return;
             
             // Loop through the connected device to find the tracker
-            // with give serial number
+            // with given serial number
             ETrackedPropertyError error = new ETrackedPropertyError();
             StringBuilder str = new StringBuilder();
             bool Assigned = false;
