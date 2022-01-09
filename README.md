@@ -70,21 +70,22 @@ Here are the detailed explanation.
 
 ## 3. Multi-Camera Switching
 
-
-In the RealSense Canvas item, the game object identifies each camera interface with the series number on it and all frames are collected by RealSense cameras into an all-in-one canvas. We implement camera switch by enabling the choosen camera object while blocking the rest in the meanwhile. 
+There are two ways to load streaming from various cameras depending on the type of cameras you use. If you are using regular cameras, you can use web cam package provided by Unity. Specifically, if all the cameras are Realsense camera, you can choose to use the Realsense camera package to load streaming. 
 
 - Open scene **WebCamStreaming** or **RealsenseStreaming**.
+  - If you use web cam packages in **WebCamStreaming**, navigate to `Scripts` game object and make sure `Use Predefined Cameras` under the <u>Web Cam Stream</u> script is unticked. Hit play in Unity and all the camera names will be loaded in the `Device Names`. Copy down the names of the cameras you want to use, stop Unity, tick `Use Predefined Cameras` and enter these names in the `Device Names` now.
+  - If you use realsense camera package in **RealsenseStreaming**, navigate to `RealSense Canvas -> Camera -> RealSense Device` for each camera you use, and enter your Realsense camera serial number. Navigate to `Scripts` and put the `ColorImage` game object under each camera you use into `Camera Canvases` under the <u>Realsense Stream</u> script.
+- Hit play in Unity, and you should see a camera view on the canvas.
 
-- ​
+There are two ways to switch frames displayed on canvas
 
-- There are two ways to switch frames displayed on canvas.
-  - **Switch with Keyboard**
+- **Switch with Keyboard**
 
-    Press the keys 'H', 'L', 'R', 'C', 'W' on keyboard to switch to 'Head', 'Left-Hand', 'Right-Hand', 'Clavicle' and 'World' cameras accordingly.
+  Press the keys 'H', 'L', 'R', 'C', 'W' on keyboard to switch to 'Head', 'Left-Hand', 'Right-Hand', 'Clavicle' and 'World' cameras accordingly.
 
-  - **Switch with Speech**
+- **Switch with Speech**
 
-    We use speech SDK provided by Unity. The candidate speech words are: 'Head', 'Left', 'Right', 'Clavicle' and 'World', which cater to different cameras correspondingly. And there're two steps you may have to follow to so that you can implement it successfully:
+  We use speech SDK provided by Unity. The candidate speech words are: 'Head', 'Left', 'Right', 'Clavicle' and 'World', which cater to different cameras correspondingly. And there're two steps you may have to follow to so that you can implement it successfully:
 
 ![Multicamera_demo](Demo/camera_switching_demo.gif)
 
