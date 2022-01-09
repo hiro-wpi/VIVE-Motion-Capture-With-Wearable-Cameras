@@ -6,6 +6,12 @@ Temp/
 obj/
 Build/
 
+# VS code
+.vscode/
+*.csproj
+*.sln
+
+# Projects
 Packages/
 ProjectSettings/
 
@@ -22,7 +28,6 @@ Assets/SteamVR_Resources.meta
 Assets/StreamingAssets.meta
 Assets/XR.meta
 
-# VS code
-.vscode/
-*.csproj
-*.sln
+#Realsense
+Assets/RealSenseSDK2.0/
+Assets/RealSenseSDK2.0.meta
