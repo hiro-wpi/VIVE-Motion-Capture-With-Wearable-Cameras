@@ -16,7 +16,6 @@ Depending on the module you use, you will need different packages:
 
 - For any of these modules, the basic package you need is "[SteamVR Plugin](https://assetstore.unity.com/packages/tools/integration/steamvr-plugin-32647)". Please make sure you put it in your Unity asset, import and download it in this project. After downloading, navigate to `Window -> SteamVR Input` and follow the instruction to generate necessary files.
 - If you want to use Realsense camera package in Unity, download [package](https://github.com/IntelRealSense/librealsense/releases/download/v2.50.0/Intel.RealSense.unitypackage) provided by RealSense and import it to the assets through `Assets -> Import Package -> Custom Package...`. Please be noted that you don't have to use this package as Unity provides its own webcam package.
-- If you need speech command (for switching camera), you need to activate the microphone based on the platform. For windows, Open up Unity Hub and make sure the module **Universal Winodws Platform Build Support** has been installed already. Open Unity Project, select `File -> Build Settings -> Universal Windows Platform -> Player Settings -> Publishing Settings -> Capabilities -> Mircophone` and tick it.
 - For eye tracking, please follow these steps to [set up tobii sdk](https://vr.tobii.com/sdk/develop/unity/getting-started/tobii-htc-dev-kit/#step-4-import-the-tobii-xr-sdk).
 
 #### **Download**
@@ -85,7 +84,8 @@ There are two ways to switch frames displayed on canvas
 
 - **Switch with Speech**
 
-  We use speech SDK provided by Unity. The candidate speech words are: 'Head', 'Left', 'Right', 'Clavicle' and 'World', which cater to different cameras correspondingly. And there're two steps you may have to follow to so that you can implement it successfully:
+  We use speech SDK provided by Unity. The captured keywords are: 'Head', 'Left', 'Right', 'Clavicle' and 'World', which cater to different cameras correspondingly.
 
-![Multicamera_demo](Demo/camera_switching_demo.gif)
+  ![Multicamera_demo](Demo/camera_switching_demo.gif)
 
+  If your microphone is not working, you may need to activate the microphone based on your platform. For windows, Open up Unity Hub and make sure the module **Universal Winodws Platform Build Support** has been installed already. Open Unity Project, select `File -> Build Settings -> Universal Windows Platform -> Player Settings -> Publishing Settings -> Capabilities -> Mircophone` and tick it.
