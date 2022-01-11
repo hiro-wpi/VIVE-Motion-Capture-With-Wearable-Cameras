@@ -21,6 +21,10 @@ public class GazeInfo : MonoBehaviour
     private System.DateTime prevTime;
     private System.TimeSpan timeSpan;
 
+    public float pixelX;
+    public float pixelY;
+    public float gazeStayTime;
+
     private bool dispGaze;
     private bool dispText;
 
@@ -103,15 +107,15 @@ public class GazeInfo : MonoBehaviour
         if (dispText)
         {
             // display pixel
-            float x = (float)gazeRay.Pixel_X;
-            float y = (float)gazeRay.Pixel_Y;
-            pixelText.text = "Pixel Coordinates: (" + x.ToString("0.0") + ", " + 
-                                                      y.ToString("0.0") + ")";
+            pixelX = (float)gazeRay.Pixel_X;
+            pixelY = (float)gazeRay.Pixel_Y;
+            pixelText.text = "Pixel Coordinates: (" + pixelX.ToString("0.0") + ", " + 
+                                                      pixelY.ToString("0.0") + ")";
 
             // display duration
-            float gazeTime = float.Parse(timeSpan.Seconds.ToString() + "." + 
-                                         timeSpan.Milliseconds.ToString()); 
-            durationText.text = "Gaze Stopping Time: " + gazeTime.ToString("0.0") + "s";
+            gazeStayTime = float.Parse(timeSpan.Seconds.ToString() + "." + 
+                                       timeSpan.Milliseconds.ToString()); 
+            durationText.text = "Gaze Stopping Time: " + gazeStayTime.ToString("0.0") + "s";
         }
     }
 

@@ -131,7 +131,6 @@ namespace ExperimentDataRecord {
             }
         }
 
-
         // Take the screenshot
         public static void TakeScreenshot(string dirPath, string filedemoName, int cnt)
         {
