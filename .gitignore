@@ -31,3 +31,12 @@ Assets/XR.meta
 #Realsense
 Assets/RealSenseSDK2.0/
 Assets/RealSenseSDK2.0.meta
+
+#Data
+Assets/Data/
+Assets/Data.meta
+Assets/Screenshot/
+Assets/Screenshot.meta
+Assets/Recordings/
+Assets/Recordings.meta
+Recordings/

@@ -51,7 +51,7 @@ Two main functions are developed to help identify the gaze data:
 
 - Calculate the staying time when gaze is fixed to a certain area for a period.
 
-- A debugging mode for this two functions is also provided to display or hide these two indications. Press **P** for hiding/showing pixel coordinates and **T** for hiding/showing gaze time duration. 
+- A debugging mode for this two functions is also provided to display or hide these two indications. Press **G** for hiding/showing gaze point and **T** for hiding/showing pixel coordinates and gaze time duration text. 
 
   ![eye_tracking_demo](Demo/eye_tracking_demo.jpg)
 
