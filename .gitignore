@@ -12,10 +12,6 @@ Build/
 *.csproj
 *.sln
 
-# Projects
-Packages/
-ProjectSettings/
-
 # steam VR
 *.vrmanifest
 Assets/SteamVR/
