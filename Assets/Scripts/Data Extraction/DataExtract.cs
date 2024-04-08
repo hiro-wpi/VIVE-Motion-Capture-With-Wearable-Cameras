@@ -1,13 +1,7 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ExperimentDataRecord;
-using OfficeOpenXml;
-using System.IO;
-using ViveSR.anipal.Eye;
-using System;
-//using HTC.UnityPlugin.Vive;
-using Valve.VR;
 
 public class DataExtract : MonoBehaviour
 {
@@ -22,36 +16,21 @@ public class DataExtract : MonoBehaviour
     // Tracker For Pose
     public GameObject[] TrackerList;
 
-    // ExcelFile
+    // CSV writter
     private int fileNum;
-    private int trial;
-    private string excelFileName;
-    private string excelSheetName;
-    private ExcelPackage exlpackage;
-    private ExcelWorksheet worksheet;
-    private int raw;
-    private int col;
-
-    // Screenshot
-    public Camera screenshotCam;
-    private float lastGazeTime;
+    private string folderName;
+    private float[] data;
+    private TextWriter dataWriter;
 
     // Record Icon
     public GameObject startIcon;
     public GameObject stopIcon;
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Initialize file info
+        // Initialize file name
         fileNum = 1;
-        trial = 1;
-        excelFileName = fileNum.ToString();
-        excelSheetName = "trial";
-        InitializeExcelSheet(excelFileName, excelSheetName + trial.ToString());
-
-        // Screenshot
-        lastGazeTime = 100.0f;
+        folderName = System.DateTime.Now.ToString("MM-dd HH-mm-ss");
 
         // Call Function to update Data
         updateRate = 10;
@@ -61,83 +40,60 @@ public class DataExtract : MonoBehaviour
     void UpdateData()
     {
         if (isRecording)
-        { 
+        {
             // DATA
             // time, gaze.x, gaze.y, gaze.t
-            // tracker.x, tracker.y, tracker.z
-            // tracker.euler.x, tracker.euler.y, tracker.euler.z
+            // n * 
+            // (tracker.x, tracker.y, tracker.z
+            //  tracker.euler.x, tracker.euler.y, tracker.euler.z)
 
-            worksheet.Cells[raw, col++].Value = Time.time;
-            worksheet.Cells[raw, col++].Value = gazeInfo.pixelX;
-            worksheet.Cells[raw, col++].Value = gazeInfo.pixelY;
-            worksheet.Cells[raw, col++].Value = gazeInfo.gazeStayTime;
-            for (int i = 0; i < TrackerList.Length; i++)
+            int length = 1 + 3 + 6 * TrackerList.Length;
+            data = new float[length];
+
+            data[0] = Time.time;
+            data[1] = gazeInfo.pixelX;
+            data[2] = gazeInfo.pixelY;
+            data[3] = gazeInfo.gazeStayTime;
+            for (int i = 4; i < length; i += 6)
             {
-                var tf = TrackerList[i].transform;
-                worksheet.Cells[raw, col++].Value = tf.position.x;
-                worksheet.Cells[raw, col++].Value = tf.position.y;
-                worksheet.Cells[raw, col++].Value = tf.position.z;
-                worksheet.Cells[raw, col++].Value = tf.rotation.eulerAngles.x;
-                worksheet.Cells[raw, col++].Value = tf.rotation.eulerAngles.y;
-                worksheet.Cells[raw, col++].Value = tf.rotation.eulerAngles.z;
+                int i_tracker = (i-4) / 6;
+                Transform tf = TrackerList[i_tracker].transform;
+                data[i] = tf.position.x;
+                data[i+1] = tf.position.y;
+                data[i+2] = tf.position.z;
+                data[i+3] = tf.rotation.eulerAngles.x;
+                data[i+4] = tf.rotation.eulerAngles.y;
+                data[i+5] = tf.rotation.eulerAngles.z;
             }
 
-            raw++;
-            col = 1;
+            dataWriter.WriteLine(ArrayToCSVLine<float>(data));
         }
     }
 
     void Update()
     {
         // Start or stop recording
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             if(isRecording)
                 StopRecording();
             else
                 StartRecording();
         }
-
-        // Respawn a new sheet for new trial in each specific task
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            StopRecording();
-            trial++;
-            InitializeExcelSheet(excelFileName, excelSheetName + " " + trial.ToString());
-        }
-
-        // Recording in a new file
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            StopRecording();
-            fileNum++;
-            trial = 1;
-            excelFileName = fileNum.ToString();
-            InitializeExcelSheet(excelFileName, excelSheetName + " " + trial.ToString());
-        }
-
-        /*
-        // Gaze Screenshot
-        if (isRecording)
-        {
-            if (lastGazeTime > gazeDurationThreshold && 
-                gazeInfo.gazeStayTime < gazeDurationThreshold)
-            {
-                // Take Screenshot
-                // (Here I don't know why I save this frame but it seems screenshot of last frame 
-                // got recorded, which caters to my willingness exactly -_-, well just let it go)
-                DataRecordUtil.TakeScreenshot("Screenshot", excelFileName, trial);
-                Debug.Log("Screenshot of the display is taken successfully!");
-            }
-        }
-        */
     }
 
     public void StartRecording()
     {
         if (!isRecording)
         {
-            Debug.Log("Recording On...");
+            // Create writer to write csv files
+            string parentFolder = Application.dataPath + "/Data/" + folderName + "/";
+            if (!Directory.Exists(parentFolder))
+                Directory.CreateDirectory(parentFolder); 
+            string name = parentFolder + "/" + fileNum.ToString();
+            dataWriter = new StreamWriter(name + ".csv", false);
+            
+            Debug.Log("Recording On");
             // UI
             startIcon.SetActive(true);
             stopIcon.SetActive(false);
@@ -150,9 +106,10 @@ public class DataExtract : MonoBehaviour
     {
         if (isRecording)
         { 
-            Debug.Log("Recording Off...");
-            exlpackage.Save();
-            Debug.Log("Data has been saved successfully!");
+            dataWriter.Close();
+            fileNum ++;
+
+            Debug.Log("Recording Off");
             // UI
             startIcon.SetActive(false);
             stopIcon.SetActive(true);
@@ -161,43 +118,19 @@ public class DataExtract : MonoBehaviour
         }
     }
 
-    public void InitializeExcelSheet(string excelFileName, string sheetName)
+    private string ArrayToCSVLine<T>(T[] array)
     {
-        // Define Excel FilePath
-        string path = Application.dataPath + "/Data/" + excelFileName + ".xlsx";
-
-        // If directory name doesn't exist, create one
-        string dirPath = System.IO.Path.GetDirectoryName(path);
-        if (!Directory.Exists(dirPath))
+        string line = "";
+        // Add value to line
+        foreach (T value in array)
         {
-            Directory.CreateDirectory(dirPath);
+            if (value is float || value is int)
+                line += string.Format("{0:0.000}", value) + ",";
+            else if (value is string)
+                line += value + ",";
         }
-        FileInfo newFile = new FileInfo(path);
-        exlpackage = new ExcelPackage(newFile);
-
-        // Open Excel File
-        DataRecordUtil.SheetRespawn(exlpackage, sheetName, out worksheet);
-
-        // Titles for each column
-        col = 1;
-        worksheet.Cells[1, col++].Value = "TimeStamp(s)";
-        worksheet.Cells[1, col++].Value = "Gaze(X)";
-        worksheet.Cells[1, col++].Value = "Gaze(Y)";
-        worksheet.Cells[1, col++].Value = "Gaze Duration(s)";
-        for(int i = 0; i < TrackerList.Length; i++)
-        {
-            var trackerName = TrackerList[i].name;
-            worksheet.Cells[1, col++].Value = trackerName + "(X)";
-            worksheet.Cells[1, col++].Value = trackerName + "(Y)";
-            worksheet.Cells[1, col++].Value = trackerName + "(Z)";
-            worksheet.Cells[1, col++].Value = trackerName + "(Raw)";
-            worksheet.Cells[1, col++].Value = trackerName + "(Pitch)";
-            worksheet.Cells[1, col++].Value = trackerName + "(Yaw)";
-        }
-        
-        raw = 2;
-        col = 1;
-        exlpackage.Save();
-        Debug.Log("File: " + excelFileName + " - Sheet: " + sheetName + " is initialied.");
+        // Remove "," in the end
+        line.Remove(line.Length - 1);
+        return line;
     }
 }

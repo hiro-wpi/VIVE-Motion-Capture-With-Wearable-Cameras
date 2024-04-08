@@ -7,12 +7,12 @@ using ViveSR.anipal.Eye;
 public class GazeInfo : MonoBehaviour
 {
     public SRanipal_GazeRaySample gazeRay;
-    public Text pixelText;
-    public Text durationText;
+    public Text[] pixelText;
+    public Text[] durationText;
     public LineRenderer lineRenderer;
 
     private float range;
-    private float distance;
+    //private float distance;
     private int segments;
     private float deltaAngle;
 
@@ -25,8 +25,8 @@ public class GazeInfo : MonoBehaviour
     public float pixelY;
     public float gazeStayTime;
 
-    private bool dispGaze;
-    private bool dispText;
+    public bool dispGaze;
+    public bool dispText;
 
     void Start()
     {
@@ -41,12 +41,15 @@ public class GazeInfo : MonoBehaviour
         dispText = true;
         // circle
         range = 3.0f;
-        distance = 99.0f;
+        //distance = 99.0f;
         segments = 18;
+        lineRenderer.startWidth = 0.7f;
+        lineRenderer.endWidth = 0.7f;
         lineRenderer.positionCount = segments + 2;
+        
         deltaAngle = 2*Mathf.PI / segments;
         // hide ray
-        gazeRay.GazeRayRenderer.enabled = false;
+        //gazeRay.GazeRayRenderer.enabled = false;
     }
 
     void Update()
@@ -60,7 +63,7 @@ public class GazeInfo : MonoBehaviour
         currPoint = new Vector2((float)gazeRay.inter_x, (float)gazeRay.inter_y);
 
         // Point in Range - calculate timespan
-        if (PointInRange(prevPoint, currPoint, distance))
+        if (PointInRange(prevPoint, currPoint, range))
         {
             timeSpan = System.DateTime.Now.Subtract(prevTime);
         }
@@ -93,15 +96,24 @@ public class GazeInfo : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             dispText = !dispText;
-            pixelText.gameObject.SetActive(dispText);
-            durationText.gameObject.SetActive(dispText);
+            for(int i = 0; i < pixelText.Length; i++)
+            {
+                pixelText[i].gameObject.SetActive(dispText);
+                durationText[i].gameObject.SetActive(dispText);
+            }
         }
         
         // Display
         if (dispGaze)
         {
             // display gaze
-            DrawCircle(currPoint, range);
+            //DrawCircle(currPoint, range);
+            Vector3 p;
+            p.x = (float)gazeRay.inter_x;
+            p.y = (float)gazeRay.inter_y;
+            p.z = (float)gazeRay.inter_z;
+
+            DrawGazeRange(p, new Vector2(2, 2));
         }
 
         if (dispText)
@@ -109,13 +121,19 @@ public class GazeInfo : MonoBehaviour
             // display pixel
             pixelX = (float)gazeRay.Pixel_X;
             pixelY = (float)gazeRay.Pixel_Y;
-            pixelText.text = "Pixel Coordinates: (" + pixelX.ToString("0.0") + ", " + 
+            for(int i = 0; i < pixelText.Length; i++)
+            {
+                pixelText[i].text = "Pixel Coordinates: (" + pixelX.ToString("0.0") + ", " +
                                                       pixelY.ToString("0.0") + ")";
-
+            }
             // display duration
             gazeStayTime = float.Parse(timeSpan.Seconds.ToString() + "." + 
                                        timeSpan.Milliseconds.ToString()); 
-            durationText.text = "Gaze Stopping Time: " + gazeStayTime.ToString("0.0") + "s";
+
+            for(int i = 0; i < durationText.Length; i++)
+            {
+                durationText[i].text = "Gaze Stopping Time: " + gazeStayTime.ToString("0.0") + "s";
+            }
         }
     }
 
@@ -129,9 +147,23 @@ public class GazeInfo : MonoBehaviour
         {
             x = Mathf.Cos(angle) * range + point.x;
             y = Mathf.Sin(angle) * range + point.y;
-            lineRenderer.SetPosition(i, new Vector3(x, y, distance));
+            lineRenderer.SetPosition(i, new Vector3(x, y, radius));
 
             angle += deltaAngle;
+        }
+    }
+
+    private void DrawGazeRange(Vector3 pt, Vector2 range)
+    {
+        float angle = 10f;
+        for (int i = 0; i < (segments + 2); i++)
+        {
+            float x = (float)(Mathf.Sin(Mathf.Deg2Rad * angle) * range.x + pt.x);
+            float y = (float)(Mathf.Cos(Mathf.Deg2Rad * angle) * range.y + pt.y);
+
+            lineRenderer.SetPosition(i, new Vector3(x, y, 99));
+
+            angle += (360f / segments);
         }
     }
 }

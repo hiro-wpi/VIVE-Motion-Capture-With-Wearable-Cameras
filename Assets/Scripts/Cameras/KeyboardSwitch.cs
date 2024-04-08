@@ -30,17 +30,15 @@ public class KeyboardSwitch : MonoBehaviour
             Debug.Log("Switching to Right-hand Camera");
             LoadCamera(2);
         }
-        /*
         else if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("Switching to Clavicle Camera");
             LoadCamera(3);
         }
-        */
         else if (Input.GetKeyDown(KeyCode.W))
         {
             Debug.Log("Switching to World Camera");
-            LoadCamera(3);
+            LoadCamera(4);
         }
     }
 

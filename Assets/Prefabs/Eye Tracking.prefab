@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LengthOfRay: 100
+  camera_source: {fileID: 0}
   inter_x: 0
   inter_y: 0
   inter_z: 0

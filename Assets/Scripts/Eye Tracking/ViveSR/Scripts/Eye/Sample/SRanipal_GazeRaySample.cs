@@ -1,4 +1,4 @@
-﻿//========= Copyright 2018, HTC Corporation. All rights reserved. ===========
+﻿﻿//========= Copyright 2018, HTC Corporation. All rights reserved. ===========
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -15,6 +15,7 @@ namespace ViveSR
             public class SRanipal_GazeRaySample : MonoBehaviour
             {
                 public int LengthOfRay = 100;
+                public GameObject camera_source;
 
                 public System.TimeSpan ts;
                 private System.DateTime stopTimePoint;
@@ -144,7 +145,7 @@ namespace ViveSR
                     double height = System.Math.Abs(RightUpPoint.y - LeftBotPoint.y);
 
 
-                    //坐标顺序 ↙ ↖ ↗ ↘ 从左下开始顺时针
+                    //Order: ↙ ↖ ↗ ↘ clockwise beginning with left-down side
 
                     // Whether in the range of matrix
                     if (p.x < LeftBotPoint.x || p.x > RightUpPoint.x || p.y < LeftBotPoint.y || p.y > RightUpPoint.y)
@@ -206,13 +207,14 @@ namespace ViveSR
                     direction_y = GazeDirectionCombinedLocal.y;
                     direction_z = GazeDirectionCombinedLocal.z;
 
-                    Vector3 GazeDirectionCombined = Camera.main.transform.TransformDirection(GazeDirectionCombinedLocal);
-                    GazeRayRenderer.SetPosition(0, Camera.main.transform.position - Camera.main.transform.up * 0.05f);
-                    GazeRayRenderer.SetPosition(1, Camera.main.transform.position + GazeDirectionCombined * LengthOfRay);
-                    //GazeRayRenderer.SetPosition(2, new Vector3(22, 45, 100));
-                    //GazeRayRenderer.SetPosition(3, new Vector3(23, 46, 100));
-                    //GazeRayRenderer.SetPosition(4, new Vector3(24, 47, 100));
 
+                    //Vector3 GazeDirectionCombined = Camera.main.transform.TransformDirection(GazeDirectionCombinedLocal);
+                    //GazeRayRenderer.SetPosition(0, Camera.main.transform.position - Camera.main.transform.up * 0.05f);
+                    //GazeRayRenderer.SetPosition(1, Camera.main.transform.position + GazeDirectionCombined * LengthOfRay);
+
+                    Vector3 GazeDirectionCombined = camera_source.transform.TransformDirection(GazeDirectionCombinedLocal);
+                    GazeRayRenderer.SetPosition(0, camera_source.transform.position - camera_source.transform.up * 0.05f);
+                    GazeRayRenderer.SetPosition(1, camera_source.transform.position + GazeDirectionCombined * LengthOfRay);
 
                     //var point = CalcIntersectPoint(GazeRayRenderer, GameObject.Find("RealSense Canvas").transform);
 

@@ -28,11 +28,27 @@ Assets/SteamVR_Resources.meta
 Assets/StreamingAssets.meta
 Assets/XR.meta
 
-#Realsense
+# ?
+Assets/RockVR/
+Assets/RockVR.meta
+
+# Shadows
+Assets/Motion Workshop/
+Assets/Motion Workshop.meta
+
+# Oculus
+Assets/Oculus/
+Assets/Oculus.meta
+
+# Final IK
+Assets/Plugins/RootMotion/
+Assets/Plugins/RootMotion.meta
+
+# Realsense
 Assets/RealSenseSDK2.0/
 Assets/RealSenseSDK2.0.meta
 
-#Data
+# Data
 Assets/Data/
 Assets/Data.meta
 Assets/Screenshot/
