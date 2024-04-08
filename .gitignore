@@ -7,6 +7,7 @@ obj/
 Build/
 
 # VS code
+.vs/
 .vscode/
 *.csproj
 *.sln
